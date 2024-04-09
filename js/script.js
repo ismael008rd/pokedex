@@ -97,7 +97,7 @@ const pegarUrl = async urimg=>{
         .then(data=> {
          const namecolor=data.types[0].type.name
          
-         li.style.backgroundColor= getTypeColor(namecolor)
+         li.style.border=` 5px solid ${getTypeColor(namecolor)}`
          })
         .catch(error=>console.log(error))
          

@@ -1,6 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Tilt+Neon&display=swap');
+
+
 *{
     box-sizing: border-box;
     margin: 0;
+    font-family: "Lato", sans-serif;
     padding: 0;
 }
 
@@ -17,12 +21,18 @@ body{
  li{
     list-style: none;
     display: flex;
+    border-radius: 5px;
+    background-color: rgb(107, 99, 99);
+    
     padding: 1rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     
     
+}
+li span{
+    color: white;
 }
 
 .pokemons{
@@ -48,6 +58,7 @@ body{
 .header--pokedex{
    
     padding-block: 1rem;
+   
     text-align: center;
 }
 .header--pokedex h1{
