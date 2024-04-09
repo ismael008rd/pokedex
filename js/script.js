@@ -18,11 +18,13 @@ const getTypeColor=type=>{
     }[type]||normal
 }
 
+const pokemons = document.querySelector('.pokemons')
 
 const getOnlyFulfilled=async({func, arr})=>{
     const promises = arr.map(func)//result=> fetch(result.url)
     const porckets = await Promise.allSettled(promises)
     return  porckets.filter(response=>response.status=='fulfilled')
+  
 
 }
 const getPokemonType = async pokApiresult =>{
@@ -57,7 +59,7 @@ const handlePageloade= async urlapi=>{
         console.log(types)
         const ids =getPokemonId(pokApiresult)
        
-        console.log(ids)
+      
      
     }
     catch(error){
@@ -68,37 +70,18 @@ const handlePageloade= async urlapi=>{
 
 handlePageloade(url)
 
-// const idsd = [1,2,3,5,6,]
 
-
-// const fetchImgs = async ids =>{
-//     try{
-        
-//         const imgid= await ids.map(id=> fetch(`testeimg/${id}.png`))
-//         const respondido = await Promise.allSettled(imgid)
-//        const imgs = respondido.filter(respond=>respond.status=='fulfilled')
-//       const resultimg= imgs.map(responsigm=>responsigm.value.url)
-//       console.log(resultimg)
-//     }
-//     catch(erro){
-//         console.log(erro)
-//     }
-// }
-
-// fetchImgs(idsd)
 
 const pegarUrl = async urimg=>{
 
-    const pokemons = document.querySelector('.pokemons')
+
     const vertipo= await getPokemonType(urimg)
-    console.log(vertipo)
    
-     console.log( urimg.map(result=>fetch(result.url)))
-    console.log(urimg)
+    const fragment = new DocumentFragment()
     
     
     urimg.forEach((itemsurl)=>{
-        console.log(itemsurl)
+        
       
 
         let urlss= itemsurl.url.split('/')
@@ -113,8 +96,7 @@ const pegarUrl = async urimg=>{
         .then(response=>response.json())
         .then(data=> {
          const namecolor=data.types[0].type.name
-         console.log(namecolor)
-         console.log(getTypeColor(namecolor))
+         
          li.style.backgroundColor= getTypeColor(namecolor)
          })
         .catch(error=>console.log(error))
@@ -129,28 +111,51 @@ const pegarUrl = async urimg=>{
         li.appendChild(img)
         spanquantiti.innerText=resulturl
         li.appendChild(spanquantiti)
-        pokemons.appendChild(li)
+        fragment.appendChild(li)
+        pokemons.appendChild(fragment)
         
         
      }
         )
+       
         updatePokemons(pokemons.lastChild)
-
 }
 
+
+let offset=15
+let limit =15
 const updatePokemons= (poke)=>{
-      const novurl='https://pokeapi.co/api/v2/pokemon?limit=15&offset=15'
-    const item = new IntersectionObserver((entries,observe)=>{
+    
+      const novurl=`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
+    const item = new IntersectionObserver((entries,observer)=>{
         console.log(entries)
-        console.log(entries[0].isIntersecting)
-        if(entries[0].isIntersecting){
-            console.log('ok meu patrão')
-            handlePageloade(novurl)
+          
+        const intercedeu=entries[0].isIntersecting
+        if(!intercedeu){
+           console.log('não interceud')
+           return
             
         }
-        console.log(poke)
-        observe.unobserve(poke)
+        
+        
+        console.log('ok meu patrão')
+        console.log(entries.target)
+            observer.unobserve(poke)
+            if(offset==150){
+                console.log('ja era seu engraçadinho desobservado')
+               return 
+            }
+            handlePageloade(novurl)
+
+            console.log('desobservou')
+            offset+=limit
+            console.log(offset)
+           
+        
     })
 
     item.observe(poke)
+    // item.unobserve(poke)
+   
 }
+
